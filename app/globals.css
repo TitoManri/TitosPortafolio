@@ -1,15 +1,34 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+  scroll-restoration: manual;
+}
+
+/* Patrón de fondo técnico tipo Linux / Developer Workspace */
+.bg-tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Resplandor sutil estilo terminal central */
+.bg-terminal-glow {
+  background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.03) 0%, transparent 60%);
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-@theme inline {
+/* Configuración de tema para Tailwind v4 (sin 'inline') */
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,11 +38,14 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
 }
+
 @keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
