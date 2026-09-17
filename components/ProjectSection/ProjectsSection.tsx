@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { FolderGit2, ExternalLink, GitBranch, Cpu, Terminal, ShieldCheck, ChevronDown, ChevronUp, Image as ImageIcon, Calendar } from "lucide-react";
+import { FolderGit2, ExternalLink, GitBranch, Cpu, ShieldCheck, ChevronDown, ChevronUp, Image as ImageIcon, Calendar } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ProjectCard {
@@ -81,7 +81,7 @@ export default function ProjectsSection() {
       
       {/* HEADER DE LA SECCIÓN */}
       <div className="flex flex-col gap-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-zinc-900/90 border border-zinc-800 text-zinc-300 text-xs font-mono w-fit">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-mono w-fit">
           <FolderGit2 className="h-3.5 w-3.5 text-zinc-400" /> PORTFOLIO & REPOSITORIES
         </div>
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-100">
@@ -95,12 +95,11 @@ export default function ProjectsSection() {
       {/* BLOQUE 1: PROYECTOS PERSONALES */}
       <div className="flex flex-col gap-5">
         <div className="flex items-center justify-between border-b border-zinc-800 pb-3 font-mono text-sm">
-          <div className="flex items-center gap-2 text-zinc-200">
-            <Terminal className="h-4 w-4 text-emerald-400" />
-            <span className="font-semibold tracking-wide">~/personal-ventures</span>
+          <div className="flex items-center gap-2 text-zinc-100 font-semibold tracking-wide">
+            <span className="text-zinc-500 font-normal">&gt;</span>
+            <span>~/personal-ventures</span>
           </div>
 
-          {/* SELECTOR NUMÉRICO CON PILLS */}
           <div className="flex items-center gap-1.5 bg-zinc-950 border border-zinc-800 rounded-lg p-1">
             {personalProjects.map((proj, idx) => (
               <button
@@ -111,7 +110,7 @@ export default function ProjectsSection() {
                 }}
                 className={`px-2.5 py-1 rounded text-xs font-mono transition-all cursor-pointer ${
                   personalIndex === idx 
-                    ? "bg-zinc-800 text-zinc-100 font-bold shadow-sm" 
+                    ? "bg-zinc-100 text-zinc-950 font-bold shadow-sm" 
                     : "text-zinc-500 hover:text-zinc-300"
                 }`}
                 title={proj.title}
@@ -126,29 +125,29 @@ export default function ProjectsSection() {
           <AnimatePresence mode="wait">
             <motion.div 
               key={currentPersonal.id}
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-              className="bg-gradient-to-br from-zinc-900/60 to-zinc-950/80 border border-zinc-800/80 rounded-xl p-6 sm:p-8 flex flex-col justify-between gap-6 hover:border-zinc-700 transition-all shadow-xl group"
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.15 }}
+              className="bg-zinc-900/30 border border-zinc-800/80 rounded-xl p-6 sm:p-8 flex flex-col justify-between gap-6 group"
             >
               <div className="flex flex-col gap-4">
-                <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800/60 pb-4">
                   <div className="flex items-center gap-2">
-                    <span className="bg-zinc-950 border border-zinc-800 text-emerald-400 text-xs font-mono px-2 py-0.5 rounded font-bold">
+                    <span className="bg-zinc-100 text-zinc-950 text-xs font-mono px-2 py-0.5 rounded font-bold">
                       [{personalIndex + 1}]
                     </span>
                     <span className="bg-zinc-950 border border-zinc-800 text-zinc-300 text-[11px] font-mono px-2.5 py-1 rounded">
                       {currentPersonal.badge}
                     </span>
                   </div>
-                  <span className="text-xs font-mono text-zinc-500 flex items-center gap-1">
-                    <Calendar className="h-3 w-3 text-zinc-400" /> {currentPersonal.period}
+                  <span className="text-xs font-mono text-zinc-400 flex items-center gap-1">
+                    <Calendar className="h-3 w-3 text-zinc-500" /> {currentPersonal.period}
                   </span>
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-2xl font-bold text-zinc-100 group-hover:text-emerald-400 transition-colors">
+                  <h3 className="text-2xl font-bold text-zinc-100">
                     {currentPersonal.title}
                   </h3>
                   <p className="text-sm sm:text-base text-zinc-300 leading-relaxed">
@@ -157,18 +156,18 @@ export default function ProjectsSection() {
                 </div>
               </div>
 
-              {/* CONTENEDOR DESPLEGABLE DE FOTOS / CAPTURAS PERSONALES */}
+              {/* CONTENEDOR DESPLEGABLE DE FOTOS */}
               <AnimatePresence>
                 {expandedId === currentPersonal.id && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.2 }}
                     className="overflow-hidden flex flex-col gap-3 pt-4 border-t border-zinc-800/80"
                   >
-                    <span className="text-xs font-mono text-emerald-400 flex items-center gap-1.5">
-                      <ImageIcon className="h-3.5 w-3.5" /> Gallery Preview:
+                    <span className="text-xs font-mono text-zinc-300 flex items-center gap-1.5">
+                      <ImageIcon className="h-3.5 w-3.5 text-zinc-400" /> Gallery Preview:
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {currentPersonal.screenshots.map((src, sIdx) => (
@@ -187,12 +186,12 @@ export default function ProjectsSection() {
               <div className="flex flex-col gap-4 pt-4 border-t border-zinc-800/80 mt-auto">
                 <div className="flex flex-wrap gap-1.5">
                   <span className="text-xs font-mono text-zinc-500 mr-2 flex items-center gap-1">
-                    <Cpu className="h-3.5 w-3.5" /> Stack:
+                    <Cpu className="h-3.5 w-3.5 text-zinc-500" /> Stack:
                   </span>
                   {currentPersonal.techStack.map((tech, tIdx) => (
                     <span 
                       key={tIdx}
-                      className="bg-zinc-950 border border-zinc-800/80 px-2.5 py-0.5 rounded text-[11px] font-mono text-zinc-400"
+                      className="bg-zinc-950 border border-zinc-800 px-2.5 py-0.5 rounded text-[11px] font-mono text-zinc-300"
                     >
                       {tech}
                     </span>
@@ -202,9 +201,9 @@ export default function ProjectsSection() {
                 <div className="flex items-center justify-between pt-2">
                   <button
                     onClick={() => toggleExpand(currentPersonal.id)}
-                    className="flex items-center gap-1.5 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer bg-emerald-950/40 border border-emerald-800/50 px-3 py-1.5 rounded-lg"
+                    className="flex items-center gap-1.5 text-xs font-mono text-zinc-200 hover:text-white transition-colors cursor-pointer bg-zinc-900 border border-zinc-800 px-3.5 py-1.5 rounded-lg"
                   >
-                    <ImageIcon className="h-3.5 w-3.5" /> 
+                    <ImageIcon className="h-3.5 w-3.5 text-zinc-400" /> 
                     {expandedId === currentPersonal.id ? "Hide Photos" : "View Photos"} 
                     {expandedId === currentPersonal.id ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                   </button>
@@ -216,7 +215,7 @@ export default function ProjectsSection() {
                       rel="noreferrer"
                       className="flex items-center gap-1.5 text-xs font-mono text-zinc-400 hover:text-zinc-100 transition-colors"
                     >
-                      <GitBranch className="h-3 w-3 text-emerald-400" /> Repository <ExternalLink className="h-3 w-3" />
+                      <GitBranch className="h-3 w-3 text-zinc-400" /> Repository <ExternalLink className="h-3 w-3" />
                     </a>
                   )}
                 </div>
@@ -229,12 +228,11 @@ export default function ProjectsSection() {
       {/* BLOQUE 2: PROYECTOS COMERCIALES */}
       <div className="flex flex-col gap-5 pt-2">
         <div className="flex items-center justify-between border-b border-zinc-800 pb-3 font-mono text-sm">
-          <div className="flex items-center gap-2 text-zinc-200">
-            <ShieldCheck className="h-4 w-4 text-emerald-400" />
-            <span className="font-semibold tracking-wide">~/commercial-deployments</span>
+          <div className="flex items-center gap-2 text-zinc-100 font-semibold tracking-wide">
+            <span className="text-zinc-500 font-normal">&gt;</span>
+            <span>~/commercial-deployments</span>
           </div>
 
-          {/* SELECTOR NUMÉRICO CON PILLS */}
           <div className="flex items-center gap-1.5 bg-zinc-950 border border-zinc-800 rounded-lg p-1">
             {commercialProjects.map((proj, idx) => (
               <button
@@ -245,7 +243,7 @@ export default function ProjectsSection() {
                 }}
                 className={`px-2.5 py-1 rounded text-xs font-mono transition-all cursor-pointer ${
                   commercialIndex === idx 
-                    ? "bg-zinc-800 text-zinc-100 font-bold shadow-sm" 
+                    ? "bg-zinc-100 text-zinc-950 font-bold shadow-sm" 
                     : "text-zinc-500 hover:text-zinc-300"
                 }`}
                 title={proj.title}
@@ -260,29 +258,29 @@ export default function ProjectsSection() {
           <AnimatePresence mode="wait">
             <motion.div 
               key={currentCommercial.id}
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-              className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl p-6 sm:p-8 flex flex-col justify-between gap-6 hover:border-zinc-700 transition-all group"
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.15 }}
+              className="bg-zinc-900/30 border border-zinc-800/80 rounded-xl p-6 sm:p-8 flex flex-col justify-between gap-6 group"
             >
               <div className="flex flex-col gap-4">
-                <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800/60 pb-4">
                   <div className="flex items-center gap-2">
-                    <span className="bg-zinc-950 border border-zinc-800 text-emerald-400 text-xs font-mono px-2 py-0.5 rounded font-bold">
+                    <span className="bg-zinc-100 text-zinc-950 text-xs font-mono px-2 py-0.5 rounded font-bold">
                       [{commercialIndex + 1}]
                     </span>
                     <span className="bg-zinc-950 border border-zinc-800 text-zinc-300 text-[11px] font-mono px-2.5 py-1 rounded">
                       {currentCommercial.badge}
                     </span>
                   </div>
-                  <span className="text-xs font-mono text-zinc-500 flex items-center gap-1">
-                    <Calendar className="h-3 w-3 text-zinc-400" /> {currentCommercial.period}
+                  <span className="text-xs font-mono text-zinc-400 flex items-center gap-1">
+                    <Calendar className="h-3 w-3 text-zinc-500" /> {currentCommercial.period}
                   </span>
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-2xl font-bold text-zinc-100 group-hover:text-emerald-400 transition-colors">
+                  <h3 className="text-2xl font-bold text-zinc-100">
                     {currentCommercial.title}
                   </h3>
                   <p className="text-sm sm:text-base text-zinc-300 leading-relaxed">
@@ -291,18 +289,18 @@ export default function ProjectsSection() {
                 </div>
               </div>
 
-              {/* CONTENEDOR DESPLEGABLE DE FOTOS / CAPTURAS COMERCIALES */}
+              {/* CONTENEDOR DESPLEGABLE DE FOTOS */}
               <AnimatePresence>
                 {expandedId === currentCommercial.id && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.2 }}
                     className="overflow-hidden flex flex-col gap-3 pt-4 border-t border-zinc-800/80"
                   >
-                    <span className="text-xs font-mono text-emerald-400 flex items-center gap-1.5">
-                      <ImageIcon className="h-3.5 w-3.5" /> Gallery Preview:
+                    <span className="text-xs font-mono text-zinc-300 flex items-center gap-1.5">
+                      <ImageIcon className="h-3.5 w-3.5 text-zinc-400" /> Gallery Preview:
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {currentCommercial.screenshots.map((src, sIdx) => (
@@ -321,12 +319,12 @@ export default function ProjectsSection() {
               <div className="flex flex-col gap-4 pt-4 border-t border-zinc-800/80 mt-auto">
                 <div className="flex flex-wrap gap-1.5">
                   <span className="text-xs font-mono text-zinc-500 mr-2 flex items-center gap-1">
-                    <Cpu className="h-3.5 w-3.5" /> Stack:
+                    <Cpu className="h-3.5 w-3.5 text-zinc-500" /> Stack:
                   </span>
                   {currentCommercial.techStack.map((tech, tIdx) => (
                     <span 
                       key={tIdx}
-                      className="bg-zinc-950 border border-zinc-800/80 px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400"
+                      className="bg-zinc-950 border border-zinc-800 px-2.5 py-0.5 rounded text-[11px] font-mono text-zinc-300"
                     >
                       {tech}
                     </span>
@@ -336,9 +334,9 @@ export default function ProjectsSection() {
                 <div className="flex items-center justify-between pt-2">
                   <button
                     onClick={() => toggleExpand(currentCommercial.id)}
-                    className="flex items-center gap-1.5 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer bg-emerald-950/40 border border-emerald-800/50 px-3 py-1.5 rounded-lg"
+                    className="flex items-center gap-1.5 text-xs font-mono text-zinc-200 hover:text-white transition-colors cursor-pointer bg-zinc-900 border border-zinc-800 px-3.5 py-1.5 rounded-lg"
                   >
-                    <ImageIcon className="h-3.5 w-3.5" /> 
+                    <ImageIcon className="h-3.5 w-3.5 text-zinc-400" /> 
                     {expandedId === currentCommercial.id ? "Hide Photos" : "View Photos"} 
                     {expandedId === currentCommercial.id ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                   </button>
@@ -350,7 +348,7 @@ export default function ProjectsSection() {
                       rel="noreferrer"
                       className="flex items-center gap-1.5 text-xs font-mono text-zinc-400 hover:text-zinc-100 transition-colors"
                     >
-                      <GitBranch className="h-3 w-3 text-emerald-400" /> Visit <ExternalLink className="h-3 w-3" />
+                      <GitBranch className="h-3 w-3 text-zinc-400" /> Visit <ExternalLink className="h-3 w-3" />
                     </a>
                   )}
                 </div>

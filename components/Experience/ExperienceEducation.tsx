@@ -82,7 +82,7 @@ export default function ExperienceEducation() {
       
       {/* HEADER DE LA SECCIÓN */}
       <div className="flex flex-col gap-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-zinc-900/90 border border-zinc-800 text-zinc-300 text-xs font-mono w-fit">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-mono w-fit">
           <Briefcase className="h-3.5 w-3.5 text-zinc-400" /> CAREER & ACADEMIA
         </div>
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-100">
@@ -95,15 +95,15 @@ export default function ExperienceEducation() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         
-        {/* COLUMNA DE EXPERIENCIA LABORAL CON SELECTOR NUMÉRICO (7 COLUMNAS) */}
+        {/* COLUMNA DE EXPERIENCIA LABORAL */}
         <div className="lg:col-span-7 flex flex-col gap-6">
           <div className="flex items-center justify-between border-b border-zinc-800 pb-3 font-mono text-sm">
-            <div className="flex items-center gap-2 text-zinc-200">
-              <Briefcase className="h-4 w-4 text-emerald-400" />
-              <span className="font-semibold tracking-wide">~/employment</span>
+            <div className="flex items-center gap-2 text-zinc-100 font-semibold tracking-wide">
+              <span className="text-zinc-500 font-normal">&gt;</span>
+              <span>~/employment</span>
             </div>
             
-            {/* SELECTOR NUMÉRICO */}
+            {/* SELECTOR NUMÉRICO EN BLANCO INVERTIDO */}
             <div className="flex items-center gap-1.5 bg-zinc-950 border border-zinc-800 rounded-lg p-1">
               {experiences.map((_, idx) => (
                 <button
@@ -111,7 +111,7 @@ export default function ExperienceEducation() {
                   onClick={() => setActiveExpIndex(idx)}
                   className={`px-2.5 py-1 rounded text-xs font-mono transition-all cursor-pointer ${
                     activeExpIndex === idx 
-                      ? "bg-zinc-800 text-zinc-100 font-bold shadow-sm" 
+                      ? "bg-zinc-100 text-zinc-950 font-bold shadow-sm" 
                       : "text-zinc-500 hover:text-zinc-300"
                   }`}
                 >
@@ -125,39 +125,45 @@ export default function ExperienceEducation() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeExpIndex}
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
-                className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl p-6 flex flex-col gap-4 relative group"
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.15 }}
+                className="bg-zinc-900/30 border border-zinc-800/80 rounded-xl p-6 sm:p-7 flex flex-col gap-5 relative group"
               >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800/60 pb-4">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-200">
                     <Calendar className="h-3 w-3 text-zinc-400" /> {currentExp.period}
                   </span>
-                  <span className="text-xs font-mono text-zinc-500 flex items-center gap-1">
-                    <Building2 className="h-3 w-3" /> {currentExp.location}
+                  <span className="text-xs font-mono text-zinc-400 flex items-center gap-1">
+                    <Building2 className="h-3 w-3 text-zinc-500" /> {currentExp.location}
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-bold text-zinc-100 group-hover:text-emerald-400 transition-colors">
+                  <h3 className="text-xl font-bold text-zinc-100">
                     {currentExp.role}
                   </h3>
-                  <p className="text-sm font-mono text-zinc-400">{currentExp.company}</p>
+                  <p className="text-sm font-mono text-zinc-400 pt-1 flex items-center gap-1.5">
+                    <span className="text-zinc-600 font-bold">@</span> {currentExp.company}
+                  </p>
                 </div>
 
-                <ul className="flex flex-col gap-2 text-xs sm:text-sm text-zinc-300 leading-relaxed list-disc list-inside">
+                {/* LISTA ESTILO TREE CON CONECTORES */}
+                <ul className="flex flex-col gap-3 text-xs sm:text-sm text-zinc-300 leading-relaxed border-l border-zinc-800 pl-4 ml-1">
                   {currentExp.description.map((desc, dIdx) => (
-                    <li key={dIdx}>{desc}</li>
+                    <li key={dIdx} className="relative">
+                      <span className="absolute -left-[21px] top-2 w-2 h-px bg-zinc-700" />
+                      {desc}
+                    </li>
                   ))}
                 </ul>
 
-                <div className="flex flex-wrap gap-1.5 pt-2">
+                <div className="flex flex-wrap gap-1.5 pt-3 border-t border-zinc-800/60">
                   {currentExp.skills.map((skill, sIdx) => (
                     <span 
                       key={sIdx}
-                      className="bg-zinc-950 border border-zinc-800/80 px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400"
+                      className="bg-zinc-950 border border-zinc-800 px-2.5 py-0.5 rounded text-[11px] font-mono text-zinc-300"
                     >
                       {skill}
                     </span>
@@ -168,15 +174,14 @@ export default function ExperienceEducation() {
           </div>
         </div>
 
-        {/* COLUMNA DE EDUCACIÓN CON SELECTOR NUMÉRICO (5 COLUMNAS) */}
+        {/* COLUMNA DE EDUCACIÓN */}
         <div className="lg:col-span-5 flex flex-col gap-6">
           <div className="flex items-center justify-between border-b border-zinc-800 pb-3 font-mono text-sm">
-            <div className="flex items-center gap-2 text-zinc-200">
-              <GraduationCap className="h-4 w-4 text-emerald-400" />
-              <span className="font-semibold tracking-wide">~/education</span>
+            <div className="flex items-center gap-2 text-zinc-100 font-semibold tracking-wide">
+              <span className="text-zinc-500 font-normal">&gt;</span>
+              <span>~/education</span>
             </div>
 
-            {/* SELECTOR NUMÉRICO */}
             <div className="flex items-center gap-1.5 bg-zinc-950 border border-zinc-800 rounded-lg p-1">
               {educations.map((_, idx) => (
                 <button
@@ -184,7 +189,7 @@ export default function ExperienceEducation() {
                   onClick={() => setActiveEduIndex(idx)}
                   className={`px-2.5 py-1 rounded text-xs font-mono transition-all cursor-pointer ${
                     activeEduIndex === idx 
-                      ? "bg-zinc-800 text-zinc-100 font-bold shadow-sm" 
+                      ? "bg-zinc-100 text-zinc-950 font-bold shadow-sm" 
                       : "text-zinc-500 hover:text-zinc-300"
                   }`}
                 >
@@ -198,31 +203,36 @@ export default function ExperienceEducation() {
             <AnimatePresence mode="wait">
               <motion.div 
                 key={activeEduIndex}
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
-                className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl p-6 flex flex-col gap-4 relative group"
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.15 }}
+                className="bg-zinc-900/30 border border-zinc-800/80 rounded-xl p-6 sm:p-7 flex flex-col gap-5 relative group"
               >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-300">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800/60 pb-4">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-200">
                     <Calendar className="h-3 w-3 text-zinc-400" /> {currentEdu.period}
                   </span>
-                  <span className="text-xs font-mono text-zinc-500">
+                  <span className="text-xs font-mono text-zinc-400">
                     {currentEdu.location}
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-bold text-zinc-100 group-hover:text-emerald-400 transition-colors">
+                  <h3 className="text-xl font-bold text-zinc-100">
                     {currentEdu.degree}
                   </h3>
-                  <p className="text-sm font-mono text-zinc-400">{currentEdu.institution}</p>
+                  <p className="text-sm font-mono text-zinc-400 pt-1 flex items-center gap-1.5">
+                    <span className="text-zinc-600 font-bold">@</span> {currentEdu.institution}
+                  </p>
                 </div>
 
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                  {currentEdu.details}
-                </p>
+                <div className="border-l border-zinc-800 pl-4 ml-1 relative">
+                  <span className="absolute -left-[17px] top-2 w-2 h-px bg-zinc-700" />
+                  <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                    {currentEdu.details}
+                  </p>
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>

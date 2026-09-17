@@ -114,33 +114,33 @@ export default function HeroSection() {
 
           {/* CONTENEDOR CON RESERVA DE ESPACIO PERFECTA (SIN LAYOUT SHIFT) */}
           <div className="relative min-h-[5rem] sm:min-h-[6rem] lg:min-h-[7rem] flex items-center">
-            
-            {/* Texto fantasma invisible que le indica al navegador el tamaño completo desde el inicio */}
-            <h1 aria-hidden="true" className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight opacity-0 pointer-events-none select-none flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span>{fullName}</span>
-              <span className="font-mono text-2xl sm:text-3xl font-normal">{targetNick}</span>
-            </h1>
+  
+  {/* Template invisible para reservar layout */}
+  <h1 aria-hidden="true" className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight opacity-0 pointer-events-none select-none flex flex-wrap items-baseline gap-x-3 gap-y-1">
+    <span>{fullName}</span>
+    <span className="font-mono text-2xl sm:text-3xl font-normal">{targetNick}</span>
+  </h1>
 
-            {/* Texto visible animado posicionado de forma absoluta sobre el área reservada */}
-            <h1 className="absolute inset-0 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-100 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span>
-                {displayName}
-                {!isTypingDone && <span className="animate-pulse text-emerald-500 font-mono ml-0.5">_</span>}
-              </span>
-              
-              <span 
-                className={`font-mono text-2xl sm:text-3xl font-normal transition-all duration-700 ${
-                  !isTypingDone 
-                    ? "opacity-0" 
-                    : isNickResolved 
-                    ? "opacity-100 text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.85)]" 
-                    : "opacity-100 text-zinc-500"
-                }`}
-              >
-                {displayNick}
-              </span>
-            </h1>
-          </div>
+  {/* Título visible animado */}
+  <h1 className="absolute inset-0 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-100 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+    <span>
+      {displayName}
+      {!isTypingDone && <span className="animate-pulse text-zinc-400 font-mono ml-0.5">_</span>}
+    </span>
+    
+    <span 
+  className={`font-mono text-2xl sm:text-3xl font-normal tracking-tight transition-all duration-700 ${
+    !isTypingDone 
+      ? "opacity-0" 
+      : isNickResolved 
+      ? "opacity-100 text-white font-medium drop-shadow-[0_2px_10px_rgba(255,255,255,0.2)]" 
+      : "opacity-100 text-zinc-500"
+  }`}
+>
+  {displayNick}
+</span>
+  </h1>
+</div>
           
           <p className="text-zinc-400 text-base sm:text-lg leading-relaxed max-w-xl">
             Full-Stack Developer experienced in building and deploying scalable web, mobile, and backend applications. Specializing in robust server-side logic with <strong className="text-zinc-200 font-semibold">.NET 8, C#, and PostgreSQL</strong>, alongside modern frontend and mobile ecosystems including <strong className="text-zinc-200 font-semibold">Next.js, TypeScript, and React Native</strong>.
