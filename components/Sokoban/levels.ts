@@ -1,4 +1,4 @@
-import { LevelData } from "@/types/sokoban";
+import { LevelData } from "./types";
 
 export const ORIGINAL_PLUS_EXTRA_LEVELS: LevelData[] = [
   {
