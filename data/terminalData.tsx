@@ -1,6 +1,7 @@
 import React from "react";
 import TetrisGame from "@/components/games/TetrisGame";
 import SnakeGame from "@/components/games/SnakeGame";
+import SokobanGame from "@/components/games/Sokoban";
 
 export interface TerminalCommand {
   name: string;
@@ -116,6 +117,7 @@ export const getCommandOutput = (cmd: string): React.ReactNode | null => {
   if (cleanCmd === "sudo hire" || cleanCmd === "hire") return HIRE_OUTPUT;
   if (cleanCmd === "tetris") return <TetrisGame />;
   if (cleanCmd === "snake") return <SnakeGame />;
+  if (cleanCmd === "sokoban") return <SokobanGame />;
 
   // Manejo de comandos 'open'
   if (cleanCmd.startsWith("open")) {
