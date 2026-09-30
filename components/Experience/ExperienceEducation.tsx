@@ -1,74 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Briefcase, GraduationCap, Calendar, Building2 } from "lucide-react";
+import { Briefcase, Calendar, Building2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-interface ExperienceItem {
-  period: string;
-  role: string;
-  company: string;
-  location: string;
-  description: string[];
-  skills: string[];
-}
-
-interface EducationItem {
-  period: string;
-  degree: string;
-  institution: string;
-  location: string;
-  details: string;
-}
-
-const experiences: ExperienceItem[] = [
-  {
-    period: "08/2025 - 08/2026",
-    role: "Mobile & Backend Developer",
-    company: "Doggies Diet AI",
-    location: "San José, Costa Rica",
-    description: [
-      "Built a cross-platform mobile application using React Native and Expo Router, featuring AI-assisted dietary meal reporting and computer vision food analysis.",
-      "Developed a scalable backend microservice using .NET 8, C#, PostgreSQL, and Redis caching layer, maintaining sub-100ms API responses for high-concurrency requests.",
-      "Integrated RevenueCat payment infrastructure to manage multi-tiered in-app subscriptions, automated SSO via Google and Apple, and streamlined user onboarding."
-    ],
-    skills: ["React Native", "Expo Router", ".NET 8", "C#", "PostgreSQL", "Redis", "RevenueCat"]
-  },
-  {
-    period: "09/2024 - 08/2025",
-    role: "Full-Stack Software Engineer (Academic Partner Project)",
-    company: "Inter-American Court Of Human Rights (Corte IDH)",
-    location: "San José, Costa Rica",
-    description: [
-      "Designed and built an enterprise-grade employee management portal using ASP.NET Core MVC, Razor Pages, .NET 8, C#, and SQL Server adhering strictly to Clean Architecture principles.",
-      "Implemented dynamic frontend user interfaces and reactive components using JavaScript, HTML5, and CSS3, streamlining internal administrative workflows and user interactions.",
-      "Developed automated unit testing suites with xUnit across core business layers, reducing system regressions by over 30% prior to deployment."
-    ],
-    skills: [".NET 8", "C#", "ASP.NET Core MVC", "Razor Pages", "SQL Server", "xUnit", "Clean Architecture"]
-  },
-  {
-    period: "01/2024 - 03/2024",
-    role: "Software Engineering Intern",
-    company: "Ministry of Public Works and Transport (MOPT)",
-    location: "San José, Costa Rica",
-    description: [
-      "Assisted in modernizing legacy internal software tools by refactoring backend code structures and optimizing database queries.",
-      "Collaborated with senior engineering teams to analyze system bottlenecks, contributing to documented efficiency gains in daily internal data workflows.",
-      "Documented technical workflows, database schemas, and standard operating procedures (SOPs) for internal system integration."
-    ],
-    skills: [".NET", "SQL Server", "Backend Architecture", "Query Optimization"]
-  }
-];
-
-const educations: EducationItem[] = [
-  {
-    period: "01/2023 - 06/2026",
-    degree: "Bachelor's Degree in Computer Systems Engineering",
-    institution: "Universidad Fidélitas",
-    location: "San José, Costa Rica",
-    details: "Focused on software engineering principles, advanced data structures, systems architecture, and database management."
-  }
-];
+import { experiences, educations } from "@/data/experienceData"; 
 
 export default function ExperienceEducation() {
   const [activeExpIndex, setActiveExpIndex] = useState(0);
@@ -103,7 +38,7 @@ export default function ExperienceEducation() {
               <span>~/employment</span>
             </div>
             
-            {/* SELECTOR NUMÉRICO EN BLANCO INVERTIDO */}
+            {/* SELECTOR NUMÉRICO */}
             <div className="flex items-center gap-1.5 bg-zinc-950 border border-zinc-800 rounded-lg p-1">
               {experiences.map((_, idx) => (
                 <button
@@ -149,11 +84,10 @@ export default function ExperienceEducation() {
                   </p>
                 </div>
 
-                {/* LISTA ESTILO TREE CON CONECTORES */}
-                <ul className="flex flex-col gap-3 text-xs sm:text-sm text-zinc-300 leading-relaxed border-l border-zinc-800 pl-4 ml-1">
+                {/* LISTA DE EXPERIENCIA */}
+                <ul className="flex flex-col gap-3 text-xs sm:text-sm text-zinc-300 leading-relaxed border-l border-zinc-800/80 ml-2 pl-4">
                   {currentExp.description.map((desc, dIdx) => (
-                    <li key={dIdx} className="relative">
-                      <span className="absolute -left-[21px] top-2 w-2 h-px bg-zinc-700" />
+                    <li key={dIdx} className="relative before:content-[''] before:absolute before:-left-4 before:top-2.5 before:w-2.5 before:h-px before:bg-zinc-700">
                       {desc}
                     </li>
                   ))}
@@ -227,12 +161,14 @@ export default function ExperienceEducation() {
                   </p>
                 </div>
 
-                <div className="border-l border-zinc-800 pl-4 ml-1 relative">
-                  <span className="absolute -left-[17px] top-2 w-2 h-px bg-zinc-700" />
-                  <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                    {currentEdu.details}
-                  </p>
-                </div>
+                {/* LISTA DE EDUCACIÓN ACTUALIZADA */}
+                <ul className="flex flex-col gap-3 text-xs sm:text-sm text-zinc-300 leading-relaxed border-l border-zinc-800/80 ml-2 pl-4">
+                  {currentEdu.details.map((detail, dIdx) => (
+                    <li key={dIdx} className="relative before:content-[''] before:absolute before:-left-4 before:top-2.5 before:w-2.5 before:h-px before:bg-zinc-700">
+                      {detail}
+                    </li>
+                  ))}
+                </ul>
               </motion.div>
             </AnimatePresence>
           </div>

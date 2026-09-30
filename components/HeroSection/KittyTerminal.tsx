@@ -3,36 +3,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { CornerDownLeft, Maximize2, Minimize2, Terminal as TerminalIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  availableCommands,
+  FASTFETCH_OUTPUT,
+  getCommandOutput,
+} from "@/data/terminalData"; // Ajusta la ruta según tu alias o estructura de carpetas
 
 interface HistoryItem {
   command: string;
   output: React.ReactNode;
 }
-
-const availableCommands = ["fastfetch", "neofetch", "help", "cat whoami.txt", "whoami", "stack", "clear", "sudo hire", "hire"];
-
-const fastfetchOutput = (
-  <div className="space-y-2 text-[10px] sm:text-[11px] font-mono py-1">
-    {/* HARDWARE */}
-    <div>
-      <p className="text-[#ffb7c5]">┌──────────────────────Hardware──────────────────────┐</p>
-      <p><span className="text-[#ffb7c5]">│ ├</span>: AMD Ryzen 7 9700X (16) @ 5.58 GHz</p>
-      <p><span className="text-[#ffb7c5]">│ ├󰍛</span>: AMD Radeon RX 9060 XT [Discrete]</p>
-      <p><span className="text-[#ffb7c5]">│ ├󰍛</span>: 13.44 GiB / 30.49 GiB (44%)</p>
-      <p><span className="text-[#ffb7c5]">└ └</span>: 294.08 GiB / 931.01 GiB (32%) - btrfs</p>
-      <p className="text-[#ffb7c5]">└────────────────────────────────────────────────────┘</p>
-    </div>
-
-    {/* SOFTWARE */}
-    <div>
-      <p className="text-[#89b4fa]">┌──────────────────────Software──────────────────────┐</p>
-      <p><span className="text-[#89b4fa]"> OS</span>: CachyOS x86_64</p>
-      <p><span className="text-[#89b4fa]">│ ├</span>: Linux cachyos</p>
-      <p><span className="text-[#89b4fa]">└ └</span>: kitty 0.48.2</p>
-      <p><span className="text-[#89b4fa]">└────────────────────────────────────────────────────┘</span></p>
-    </div>
-  </div>
-);
 
 export default function KittyTerminal() {
   const [inputVal, setInputVal] = useState("");
@@ -41,17 +21,15 @@ export default function KittyTerminal() {
   const [history, setHistory] = useState<HistoryItem[]>([
     {
       command: "fastfetch",
-      output: fastfetchOutput
-    }
+      output: FASTFETCH_OUTPUT,
+    },
   ]);
 
   const outputRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasMountedRef = useRef(false);
 
-  // Auto-scroll SOLO dentro del contenedor de salida de la terminal.
-  // Nunca se usa scrollIntoView porque eso arrastra la ventana del navegador
-  // y reposiciona la página al recargar.
+  // Auto-scroll únicamente dentro del contenedor de salida de la terminal
   useEffect(() => {
     if (!hasMountedRef.current) {
       hasMountedRef.current = true;
@@ -68,20 +46,26 @@ export default function KittyTerminal() {
   useEffect(() => {
     if (isOpen) {
       const timer = setTimeout(() => {
-        // preventScroll evita que el navegador desplace la página hasta el input
         inputRef.current?.focus({ preventScroll: true });
-      }, 100); // Pequeño retraso para asegurar que la animación termine de renderizarse
+      }, 100);
       return () => clearTimeout(timer);
     }
   }, [isExpanded, isOpen]);
 
-  const matchingCommand = availableCommands.find((c) => c.startsWith(inputVal.trim().toLowerCase()) && inputVal.length > 0) || "";
-  const suggestionGhost = matchingCommand.startsWith(inputVal.toLowerCase()) ? matchingCommand.slice(inputVal.length) : "";
+  const matchingCommand =
+    availableCommands.find(
+      (c) => c.startsWith(inputVal.trim().toLowerCase()) && inputVal.length > 0
+    ) || "";
+  const suggestionGhost = matchingCommand.startsWith(inputVal.toLowerCase())
+    ? matchingCommand.slice(inputVal.length)
+    : "";
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Tab" || (e.key === "ArrowRight" && suggestionGhost)) {
       e.preventDefault();
-      const match = availableCommands.find((c) => c.startsWith(inputVal.trim().toLowerCase()));
+      const match = availableCommands.find((c) =>
+        c.startsWith(inputVal.trim().toLowerCase())
+      );
       if (match) {
         setInputVal(match);
       }
@@ -93,51 +77,13 @@ export default function KittyTerminal() {
     const cmd = inputVal.trim().toLowerCase().replace(/\s+/g, " ");
     if (!cmd) return;
 
-    let outputNode: React.ReactNode = null;
-
-    if (cmd === "help") {
-      outputNode = (
-        <div className="text-zinc-300 space-y-1">
-          <p className="text-zinc-100 font-semibold">Available commands (Press Tab or Right Arrow to autocomplete):</p>
-          <p><span className="text-zinc-200">fastfetch / neofetch</span> - Print system specs</p>
-          <p><span className="text-zinc-200">cat whoami.txt</span> - Brief intro</p>
-          <p><span className="text-zinc-200">stack</span> - Show core technologies</p>
-          <p><span className="text-zinc-200">clear</span> - Clear terminal screen</p>
-          <p><span className="text-zinc-200">sudo hire</span> - Priority application action</p>
-        </div>
-      );
-    } else if (cmd === "neofetch" || cmd === "fastfetch") {
-      outputNode = fastfetchOutput;
-    } else if (cmd === "cat whoami.txt" || cmd === "whoami" || cmd === "cat whoami") {
-      outputNode = (
-        <p className="text-zinc-300">
-          Full-Stack Developer focused on robust backend systems (.NET 8, C#, PostgreSQL) and modern frontend/mobile experiences (Next.js, React Native).
-        </p>
-      );
-    } else if (cmd === "stack") {
-      outputNode = (
-        <p className="text-zinc-300">
-          Core: .NET 8, C#, PostgreSQL, Redis, Next.js, TypeScript, React Native, Docker.
-        </p>
-      );
-    } else if (cmd === "clear") {
+    if (cmd === "clear") {
       setHistory([]);
       setInputVal("");
       return;
-    } else if (cmd === "sudo hire" || cmd === "hire") {
-      outputNode = (
-        <p className="text-emerald-400 font-semibold">
-          Access granted! Reach out directly at manri.carazo@gmail.com or via the contact section below.
-        </p>
-      );
-    } else {
-      outputNode = (
-        <p className="text-red-400">
-          zsh: command not found: {cmd}. Type <span className="text-zinc-200 underline">help</span> for available commands.
-        </p>
-      );
     }
 
+    const outputNode = getCommandOutput(cmd);
     setHistory((prev) => [...prev, { command: inputVal, output: outputNode }]);
     setInputVal("");
   };
@@ -158,11 +104,15 @@ export default function KittyTerminal() {
         )}
       </AnimatePresence>
 
-      {/* CONTENEDOR CON LAYOUT ANIMATION PARA EXPANSIÓN FLUIDA */}
-      <motion.div 
+      {/* CONTENEDOR CON LAYOUT ANIMATION */}
+      <motion.div
         layout
         transition={{ type: "spring", stiffness: 350, damping: 30 }}
-        className={`w-full ${isExpanded ? "fixed inset-x-4 top-[8vh] bottom-[8vh] max-w-4xl mx-auto z-50 h-[84vh]" : "h-[340px] w-full relative z-10"}`}
+        className={`w-full ${
+          isExpanded
+            ? "fixed inset-x-4 top-[8vh] bottom-[8vh] max-w-4xl mx-auto z-50 h-[84vh]"
+            : "h-[340px] w-full relative z-10"
+        }`}
       >
         <AnimatePresence mode="wait" initial={false}>
           {!isOpen ? (
@@ -187,7 +137,7 @@ export default function KittyTerminal() {
               </button>
             </motion.div>
           ) : (
-            /* ESTADO ABIERTO CON TRANSICIÓN CRT Y DE TAMAÑO */
+            /* ESTADO ABIERTO */
             <motion.div
               key="terminal-window"
               initial={{ scaleY: 0.1, scaleX: 0.5, opacity: 0 }}
@@ -199,46 +149,65 @@ export default function KittyTerminal() {
             >
               <div className="bg-[#181920] px-4 py-2.5 border-b border-zinc-800/80 flex items-center justify-between text-zinc-400 select-none">
                 <div className="flex items-center gap-2">
-                  <button 
+                  <button
                     onClick={() => {
                       setIsOpen(false);
                       setIsExpanded(false);
                     }}
                     className="h-3 w-3 rounded-full bg-[#ff5f56] hover:opacity-85 transition-opacity focus:outline-none cursor-pointer"
                     title="Close terminal"
-                  ></button>
-                  <button 
+                  />
+                  <button
                     onClick={() => setIsExpanded(false)}
                     className="h-3 w-3 rounded-full bg-[#ffbd2e] hover:opacity-85 transition-opacity focus:outline-none cursor-pointer"
                     title="Minimize terminal"
-                  ></button>
-                  <button 
+                  />
+                  <button
                     onClick={() => setIsExpanded(!isExpanded)}
                     className="h-3 w-3 rounded-full bg-[#27c93f] hover:opacity-85 transition-opacity focus:outline-none cursor-pointer"
                     title={isExpanded ? "Restore" : "Expand"}
-                  ></button>
+                  />
                 </div>
-                
+
                 <div className="bg-[#111217] px-3 py-1 rounded text-zinc-300 border border-zinc-800 text-[11px] flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   kitty ~ tito@cachyos
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <button 
+                  <button
                     onClick={() => setIsExpanded(!isExpanded)}
                     className="text-zinc-500 hover:text-zinc-200 transition-colors p-1 cursor-pointer"
                     title={isExpanded ? "Minimize terminal" : "Maximize terminal"}
                   >
-                    {isExpanded ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+                    {isExpanded ? (
+                      <Minimize2 className="h-3.5 w-3.5" />
+                    ) : (
+                      <Maximize2 className="h-3.5 w-3.5" />
+                    )}
                   </button>
                   <span className="text-zinc-600 text-[10px]">zsh</span>
                 </div>
               </div>
 
-              <div ref={outputRef} className="p-3 flex-1 overflow-y-auto space-y-3 text-[11px] scrollbar-thin scrollbar-thumb-zinc-800">
+              <div
+                ref={outputRef}
+                className="p-3 flex-1 overflow-y-auto space-y-3 text-[11px] scrollbar-thin scrollbar-thumb-zinc-800"
+              >
                 <div className="text-zinc-500">
-                  Type <span className="text-zinc-300 bg-zinc-800 px-1.5 py-0.5 rounded">fastfetch</span>. Press <span className="text-zinc-300 bg-zinc-800 px-1.5 py-0.5 rounded">Tab</span> or <span className="text-zinc-300 bg-zinc-800 px-1.5 py-0.5 rounded">→</span> to autocomplete.
+                  Type{" "}
+                  <span className="text-zinc-300 bg-zinc-800 px-1.5 py-0.5 rounded">
+                    fastfetch
+                  </span>
+                  . Press{" "}
+                  <span className="text-zinc-300 bg-zinc-800 px-1.5 py-0.5 rounded">
+                    Tab
+                  </span>{" "}
+                  or{" "}
+                  <span className="text-zinc-300 bg-zinc-800 px-1.5 py-0.5 rounded">
+                    →
+                  </span>{" "}
+                  to autocomplete.
                 </div>
 
                 {history.map((item, index) => (
@@ -252,7 +221,10 @@ export default function KittyTerminal() {
                 ))}
               </div>
 
-              <form onSubmit={handleCommand} className="bg-[#14151a] border-t border-zinc-800/80 px-3 py-2 flex items-center gap-2 relative">
+              <form
+                onSubmit={handleCommand}
+                className="bg-[#14151a] border-t border-zinc-800/80 px-3 py-2 flex items-center gap-2 relative"
+              >
                 <span className="text-emerald-400 z-10">❯</span>
                 <div className="relative w-full flex items-center">
                   <input
@@ -271,7 +243,10 @@ export default function KittyTerminal() {
                     </div>
                   )}
                 </div>
-                <button type="submit" className="text-zinc-600 hover:text-zinc-300 transition-colors z-10 cursor-pointer">
+                <button
+                  type="submit"
+                  className="text-zinc-600 hover:text-zinc-300 transition-colors z-10 cursor-pointer"
+                >
                   <CornerDownLeft className="h-3.5 w-3.5" />
                 </button>
               </form>
